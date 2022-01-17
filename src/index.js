@@ -20,7 +20,7 @@ class GameBoard extends React.Component {
     this.state = {
       squares: Array(9).fill(null),
       turn: true,
-      player: ""
+      winner: ""
     }
   }
 
@@ -34,7 +34,10 @@ class GameBoard extends React.Component {
       this.setState({turn: true})
       newArray[i] = turn
     }
-    this.setState({squares: newArray})
+    this.setState({squares: newArray}, () => {
+      this.checkGame()
+    })
+    
   }
 
   renderSquare(i) {
@@ -47,34 +50,35 @@ class GameBoard extends React.Component {
   }
 
   checkGame() {
-    const horizontalArray  =  this.state.squares.slice()
-    let horizontalString = horizontalArray.join("")
-
-    const verticalArray = this.state.squares.slice()
-      console.log(verticalArray[0])
-
-    let  verticalString =   verticalArray[0] + 
-                            verticalArray[3] +
-                            verticalArray[6] +
-                            verticalArray[1] +
-                            verticalArray[4] +
-                            verticalArray[7] +
-                            verticalArray[2] +
-                            verticalArray[5] +
-                            verticalArray[8];
-    console.log(verticalString)
-
-    if (horizontalString.includes("XXX")) {
-      console.log(true);
-    }else if (horizontalString.includes("OOO")) {
-      console.log(true)
+    const stateArray = this.state.squares.slice();
+    let array = stateArray.join("");
+    let player = this.state.turn ? "X" : "O";
+    console.log(array)
+    if (array.includes("XXX")){
+      this.setState({winner: "X", turn: ""}, () => {
+        console.log(this.state.winner)
+      })
+    }else if (array.includes("OOO")) {
+      this.setState({winner: "O", turn: ""}, () => {
+        console.log(this.state.winner)
+      })
     }
   }
 
   render() {
-    this.checkGame()
+
+    const winner = this.state.winner !== "" ? true : false
+    let status;
+    if (winner){
+      status = "The winner is....." + this.state.winner + "!";
+    } else {
+      let player = this.state.turn ? "X" : "O";
+      status = "It is" + " " + player + "'s turn!";
+    }
+
     return(
       <div>
+        <div className='turn_notification'>{status}</div>
         <div className='row_1'>
           {this.renderSquare(0)}
           {this.renderSquare(1)}
@@ -96,7 +100,7 @@ class GameBoard extends React.Component {
 }
 
 
-ReactDOM.render(
+ReactDOM.render (
   <GameBoard />,
   document.getElementById("root")
 )
