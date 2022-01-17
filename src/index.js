@@ -14,13 +14,25 @@ function Square(props) {
   )
 }
 
+function RefreshButtonElement(props) {
+  return(
+    <button
+    className="buttonRefresh"
+    onClick={props.onClick}
+  >
+    Start New Game
+  </button>
+  )
+}
+
 class GameBoard extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       squares: Array(9).fill(null),
       turn: true,
-      winner: ""
+      winner: "",
+      refresh: false
     }
   }
 
@@ -53,15 +65,9 @@ class GameBoard extends React.Component {
     const stateArray = this.state.squares.slice();
     let array = stateArray.join("");
     if (array.includes("XXX")){
-      this.setState({winner: "X", turn: ""}, () => {
-        console.log(this.state.winner)
-      })
-      return
+      this.setState({winner: "X", turn: "", refresh: true})
     }else if (array.includes("OOO")) {
-      this.setState({winner: "O", turn: ""}, () => {
-        console.log(this.state.winner)
-      })
-      return
+      this.setState({winner: "O", turn: "", refresh: true})
     }
 
     let veriticalArray = this.state.squares.slice();
@@ -81,15 +87,9 @@ class GameBoard extends React.Component {
                                 veriticalArray[5] +
                                 veriticalArray[8]
     if (changedVeriticalArray.includes("XXX")) {
-      this.setState({winner: "X", turn: ""}, () => {
-        console.log(this.state.winner)
-      })
-      return
+      this.setState({winner: "X", turn: "", refresh: true})
     }else if (changedVeriticalArray.includes("OOO")) {
-      this.setState({winner: "O", turn: ""}, () => {
-        console.log(this.state.winner)
-      })
-      return      
+      this.setState({winner: "O", turn: "", refresh: true})    
     }
 
     let diagnolArray = this.state.squares.slice();
@@ -106,18 +106,22 @@ class GameBoard extends React.Component {
                         diagnolArray[4] +
                         diagnolArray[6]
     if (diagnolString.includes("XXX")) {
-      this.setState({winner: "X", turn: ""}, () => {
-        console.log(this.state.winner)
-      })
-      return 
+      this.setState({winner: "X", turn: "", refresh: true})
     }else if (diagnolString.includes("OOO")) {
-      this.setState({winner: "O", turn: ""}, () => {
-        console.log(this.state.winner)
-      })
-      return
+      this.setState({winner: "O", turn: "", refresh: true})
     }
+  }
 
-    if (this.state.winner !== "") {this.setState({turn: ""})}
+  renderRefreshButton() {
+      return (
+        <RefreshButtonElement />
+      )
+  }
+
+  refresh() {
+    console.log("Firing")
+
+    this.renderRefreshButton()
 
   }
 
@@ -131,7 +135,9 @@ class GameBoard extends React.Component {
       let player = this.state.turn ? "X" : "O";
       status = "It is" + " " + player + "'s turn!";
     }
-
+    let refreshButton = this.state.refresh ? this.renderRefreshButton() : null
+      console.log(refreshButton)
+ 
     return(
       <div>
         <div className='turn_notification'>{status}</div>
@@ -150,6 +156,7 @@ class GameBoard extends React.Component {
           {this.renderSquare(7)}
           {this.renderSquare(8)}
         </div>
+        <div>{refreshButton}</div>
       </div>
     )
   }
