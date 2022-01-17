@@ -52,17 +52,73 @@ class GameBoard extends React.Component {
   checkGame() {
     const stateArray = this.state.squares.slice();
     let array = stateArray.join("");
-    let player = this.state.turn ? "X" : "O";
-    console.log(array)
     if (array.includes("XXX")){
       this.setState({winner: "X", turn: ""}, () => {
         console.log(this.state.winner)
       })
+      return
     }else if (array.includes("OOO")) {
       this.setState({winner: "O", turn: ""}, () => {
         console.log(this.state.winner)
       })
+      return
     }
+
+    let veriticalArray = this.state.squares.slice();
+    for (let i = 0; i < veriticalArray.length; i++) {
+      if (veriticalArray[i] === null) {
+        veriticalArray[i] = "."
+      }
+    }
+    let changedVeriticalArray
+        changedVeriticalArray = veriticalArray[0] +
+                                veriticalArray[3] +
+                                veriticalArray[6] +
+                                veriticalArray[1] +
+                                veriticalArray[4] +
+                                veriticalArray[7] +
+                                veriticalArray[2] +
+                                veriticalArray[5] +
+                                veriticalArray[8]
+    if (changedVeriticalArray.includes("XXX")) {
+      this.setState({winner: "X", turn: ""}, () => {
+        console.log(this.state.winner)
+      })
+      return
+    }else if (changedVeriticalArray.includes("OOO")) {
+      this.setState({winner: "O", turn: ""}, () => {
+        console.log(this.state.winner)
+      })
+      return      
+    }
+
+    let diagnolArray = this.state.squares.slice();
+    for (let i = 0; i < diagnolArray.length; i++) {
+      if (diagnolArray[i] === null) {
+        diagnolArray[i] = "."
+      }
+    }
+    let diagnolString;
+        diagnolString = diagnolArray[0] +
+                        diagnolArray[4] +
+                        diagnolArray[8] +
+                        diagnolArray[2] +
+                        diagnolArray[4] +
+                        diagnolArray[6]
+    if (diagnolString.includes("XXX")) {
+      this.setState({winner: "X", turn: ""}, () => {
+        console.log(this.state.winner)
+      })
+      return 
+    }else if (diagnolString.includes("OOO")) {
+      this.setState({winner: "O", turn: ""}, () => {
+        console.log(this.state.winner)
+      })
+      return
+    }
+
+    if (this.state.winner !== "") {this.setState({turn: ""})}
+
   }
 
   render() {
