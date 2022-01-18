@@ -63,12 +63,27 @@ class GameBoard extends React.Component {
 
   checkGame() {
     const stateArray = this.state.squares.slice();
-    let array = stateArray.join("");
-    if (array.includes("XXX")){
-      this.setState({winner: "X", turn: "", refresh: true})
-    }else if (array.includes("OOO")) {
-      this.setState({winner: "O", turn: "", refresh: true})
+    const object = {
+                    first:  [stateArray[0], stateArray[1], stateArray[2]],
+                    second: [stateArray[3], stateArray[4], stateArray[5]],
+                    third:  [stateArray[6], stateArray[7], stateArray[8]]
+                   };
+    console.log(object);
+    let condition_one =   object.first[0]  + object.first[1]  + object.first[2];
+    let condition_two =   object.second[0] + object.second[1] + object.second[2];
+    let condition_three = object.third[0]  + object.third[1]  + object.third[2];
+
+    let testArray = [condition_one, condition_two, condition_three]
+
+    for (let i = 0; i < testArray.length; i++) {
+      if (testArray[i].length === 3) {
+        this.setState({winner: testArray[i][0], turn: "", refresh: true},
+          () => {
+            console.log(this.state.winner);
+          });
+      }
     }
+
 
     let veriticalArray = this.state.squares.slice();
     for (let i = 0; i < veriticalArray.length; i++) {
@@ -110,7 +125,7 @@ class GameBoard extends React.Component {
     }else if (diagnolString.includes("OOO")) {
       this.setState({winner: "O", turn: "", refresh: true})
     }
-    console.log("array: ", array);
+    // console.log("array: ", array);
     // console.log("changed vertical array: ", changedVeriticalArray)
     // console.log("diagnolString ", diagnolString)
   }
