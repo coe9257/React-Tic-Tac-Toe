@@ -113,14 +113,19 @@ class GameBoard extends React.Component {
   }
 
   removeButton() {
-    this.setState({refresh: null})
+    this.setState({
+      refresh: null, squares: Array(9).fill(null),
+      turn: true,
+      winner: ""
+    });
+
   }
 
   renderRefreshButton(props) {
     console.log("Firing line 121: RenderFreshButton", props)
       return (
         <RefreshButtonElement 
-          onClick={() => this.removeButton}
+          onClick={() => this.removeButton()}
         />
       )
   }
