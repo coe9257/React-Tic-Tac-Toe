@@ -110,6 +110,9 @@ class GameBoard extends React.Component {
     }else if (diagnolString.includes("OOO")) {
       this.setState({winner: "O", turn: "", refresh: true})
     }
+    console.log("array: ", array);
+    // console.log("changed vertical array: ", changedVeriticalArray)
+    // console.log("diagnolString ", diagnolString)
   }
 
   removeButton() {
