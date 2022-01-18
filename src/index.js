@@ -17,11 +17,11 @@ function Square(props) {
 function RefreshButtonElement(props) {
   return(
     <button
-    className="buttonRefresh"
-    onClick={props.onClick}
-  >
-    Start New Game
-  </button>
+      className="buttonRefresh"
+      onClick={props.onClick}
+    >
+      Start New Game
+    </button>
   )
 }
 
@@ -112,17 +112,17 @@ class GameBoard extends React.Component {
     }
   }
 
-  renderRefreshButton() {
-      return (
-        <RefreshButtonElement />
-      )
+  removeButton() {
+    this.setState({refresh: null})
   }
 
-  refresh() {
-    console.log("Firing")
-
-    this.renderRefreshButton()
-
+  renderRefreshButton(props) {
+    console.log("Firing line 121: RenderFreshButton", props)
+      return (
+        <RefreshButtonElement 
+          onClick={() => this.removeButton}
+        />
+      )
   }
 
   render() {
@@ -135,9 +135,9 @@ class GameBoard extends React.Component {
       let player = this.state.turn ? "X" : "O";
       status = "It is" + " " + player + "'s turn!";
     }
-    let refreshButton = this.state.refresh ? this.renderRefreshButton() : null
-      console.log(refreshButton)
- 
+    let refreshButton
+    refreshButton = this.state.refresh ? this.renderRefreshButton() : null
+    
     return(
       <div>
         <div className='turn_notification'>{status}</div>
