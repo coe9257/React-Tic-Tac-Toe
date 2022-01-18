@@ -32,12 +32,21 @@ class GameBoard extends React.Component {
       squares: Array(9).fill(null),
       turn: true,
       winner: "",
-      refresh: false
+      refresh: false,
+      history: []
     }
   }
 
   clickEvent(i) {
     const newArray = this.state.squares.slice()
+    const history = this.state.history
+          history.push(newArray);
+    this.setState({
+                  history: history
+                  },
+                    () => console.log(this.state.history)
+                  )
+
     let turn = this.state.turn ? "X" : "O"
     if (this.state.turn === true && this.state.squares[i] === null) {
       newArray[i] = turn
@@ -68,7 +77,6 @@ class GameBoard extends React.Component {
                     second: [stateArray[3], stateArray[4], stateArray[5]],
                     third:  [stateArray[6], stateArray[7], stateArray[8]]
                    };
-    console.log(object);
     let condition_one =   object.first[0]  + object.first[1]  + object.first[2];
     let condition_two =   object.second[0] + object.second[1] + object.second[2];
     let condition_three = object.third[0]  + object.third[1]  + object.third[2];
@@ -79,7 +87,7 @@ class GameBoard extends React.Component {
       if (testArray[i].length === 3) {
         this.setState({winner: testArray[i][0], turn: "", refresh: true},
           () => {
-            console.log(this.state.winner);
+            // console.log(this.state.winner);
           });
       }
     }
@@ -134,13 +142,13 @@ class GameBoard extends React.Component {
     this.setState({
       refresh: null, squares: Array(9).fill(null),
       turn: true,
-      winner: ""
+      winner: "",
+      history: []
     });
 
   }
 
   renderRefreshButton(props) {
-    console.log("Firing line 121: RenderFreshButton", props)
       return (
         <RefreshButtonElement 
           onClick={() => this.removeButton()}
